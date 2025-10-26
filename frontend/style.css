@@ -1,0 +1,244 @@
+body {
+  background: #0e1726;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.container {
+  padding: 30px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+p {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #d1d5db;
+}
+
+.mode-switch button {
+  background: #1f2937;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.mode-switch button.active {
+  background: #2563eb;
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+}
+
+section {
+  display: none;
+  margin-top: 25px;
+}
+
+section.visible {
+  display: block;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.controls input,
+.controls select,
+.controls button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+.controls input {
+  width: 280px;
+}
+
+.controls button {
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.controls button:hover {
+  background: #1e40af;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 35px;
+  color: #f3f4f6;
+  font-size: 1rem;
+}
+
+.speed-control input[type="range"] {
+  width: 250px;
+  accent-color: #f97316;
+  cursor: pointer;
+}
+
+#visualContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+  justify-items: center;
+  margin-bottom: 40px;
+}
+
+.chart {
+  background: #1f2937;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  min-height: 340px;
+  width: 100%;
+  max-width: 420px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.chart:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+}
+
+.chart h3 {
+  margin-bottom: 18px;
+  color: #f3f4f6;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.barsWrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 280px;
+  width: 100%;
+  overflow: hidden;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.bar {
+  display: inline-block;
+  background: #3b82f6;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  flex: 1;
+  max-width: 30px;
+  transition: all 0.25s ease;
+  transform-origin: bottom;
+}
+
+.bar span {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  color: #f9fafb;
+  pointer-events: none;
+}
+
+.bar:hover {
+  background: #60a5fa;
+  transform: scaleY(1.07);
+}
+
+#comparisonTable {
+  width: 95%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: #1f2937;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+#comparisonTable th,
+#comparisonTable td {
+  padding: 12px;
+  border: 1px solid #374151;
+  color: #f3f4f6;
+  text-align: center;
+}
+
+#comparisonTable tr:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+#history {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: left;
+  max-height: 250px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+.path-controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.path-controls select,
+.path-controls button {
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+.path-controls button {
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.path-controls button:hover {
+  background: #1e40af;
+}
+
+#graphCanvas {
+  background: #111827;
+  border-radius: 20px;
+  margin-top: 20px;
+  border: 1px solid #374151;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  cursor: crosshair;
+}
+
+#pathCostDisplay {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  color: #22c55e;
+}

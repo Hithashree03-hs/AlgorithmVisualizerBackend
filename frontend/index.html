@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Algorithm Visualizer</h1>
+    <p>Sorting & Pathfinding — Interactive Visualizer</p>
+
+    <div class="mode-switch">
+      <button id="sortingBtn" class="active">Sorting</button>
+      <button id="pathfindingBtn">Pathfinding</button>
+    </div>
+
+    
+    <section id="sortingSection" class="visible">
+      <div class="controls">
+        <input type="text" id="arrayInput" placeholder="Enter elements (e.g. -5, 3.2, a, 0, z)" />
+        <select id="sortSelect">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="heap">Heap Sort</option>
+        </select>
+        <button id="runSortBtn">Run Sorting</button>
+      </div>
+
+   
+      <div class="speed-control">
+        <label for="speedRange">Speed:</label>
+        <input type="range" id="speedRange" min="50" max="1000" value="220" step="10" />
+        <span id="speedValue">220 ms</span>
+      </div>
+
+      <div id="visualContainer"></div>
+
+      <h2>Comparison Table</h2>
+      <table id="comparisonTable">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Steps</th>
+            <th>Time (ms)</th>
+            <th>Swaps</th>
+            <th>Complexity</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h2>History</h2>
+      <div id="history"></div>
+    </section>
+
+   
+    <section id="pathfindingSection" class="hidden">
+      <div class="path-controls">
+        <label>Graph Weighted:</label>
+        <select id="weightedSelect">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        <label>Graph Directed:</label>
+        <select id="directedSelect">
+          <option value="undirected">Undirected</option>
+          <option value="directed">Directed</option>
+        </select>
+        <label>Algorithm:</label>
+        <select id="pathAlgoSelect">
+  <option value="bfs">BFS</option>
+  <option value="dfs">DFS</option>
+  <option value="dijkstra">Dijkstra</option>
+  <option value="bellmanford">Bellman-Ford</option>
+  <option value="astar">A*</option> 
+</select>
+
+        
+        <button id="addNodeBtn">Add Node</button>
+        <button id="addEdgeBtn">Add Edge</button>
+        <button id="runPathBtn">Run</button>
+        <button id="resetGraphBtn">Reset</button>
+      </div>
+
+      <canvas id="graphCanvas" width="900" height="500"></canvas>
+      <div id="pathCostDisplay"></div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

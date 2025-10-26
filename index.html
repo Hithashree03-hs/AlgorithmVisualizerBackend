@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithm Visualizer</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    select, input, button { margin: 5px; padding: 5px; }
+    #output { margin-top: 20px; white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; }
+    table { border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #333; padding: 5px 10px; }
+  </style>
+</head>
+<body>
+  <h1>Algorithm Visualizer</h1>
+
+  <h2>Sorting</h2>
+  <label>Array (comma separated):</label>
+  <input type="text" id="sortArray" value="5,2,9,1,0,-3" size="30">
+  <label>Algorithm:</label>
+  <select id="sortAlgo">
+    <option value="bubble">Bubble Sort</option>
+    <option value="insertion">Insertion Sort</option>
+    <option value="merge">Merge Sort</option>
+    <option value="quick">Quick Sort</option>
+    <option value="heap">Heap Sort</option>
+  </select>
+  <button onclick="runSorting()">Run Sorting</button>
+
+  <h2>Pathfinding</h2>
+  <label>Grid rows,cols:</label>
+  <input type="number" id="gridRows" value="5" min="2" style="width:50px;">
+  <input type="number" id="gridCols" value="5" min="2" style="width:50px;">
+  <label>Algorithm:</label>
+  <select id="pathAlgo">
+    <option value="bfs">BFS</option>
+    <option value="dfs">DFS</option>
+    <option value="dijkstra">Dijkstra</option>
+    <option value="aStar">A*</option>
+    <option value="bellman">Bellman-Ford</option>
+  </select>
+  <button onclick="runPathfinding()">Run Pathfinding</button>
+
+  <h2>Compare Algorithms</h2>
+  <button onclick="runCompareSorting()">Compare Sorting</button>
+  <button onclick="runComparePath()">Compare Pathfinding</button>
+
+  <div id="output"></div>
+
+  <script>
+    const backendURL = "http://localhost:5000";
+
+    function parseArray(str) {
+      return str.split(',').map(x => parseInt(x.trim()));
+    }
+
+    function runSorting() {
+      const array = parseArray(document.getElementById('sortArray').value);
+      const algorithm = document.getElementById('sortAlgo').value;
+
+      fetch(`${backendURL}/api/sort`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ algorithm, array })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('output').innerText =
+          `Algorithm: ${data.algorithm}\nInput: ${data.input}\nSorted: ${data.output}\nSteps: ${data.steps}\nTime: ${data.timeMs} ms`;
+      });
+    }
+
+    function generateGrid(rows, cols) {
+      const grid = [];
+      for(let r=0;r<rows;r++){
+        const row = [];
+        for(let c=0;c<cols;c++){
+          row.push(""); 
+        }
+        grid.push(row);
+      }
+      return grid;
+    }
+
+    function runPathfinding() {
+      const rows = parseInt(document.getElementById('gridRows').value);
+      const cols = parseInt(document.getElementById('gridCols').value);
+      const algorithm = document.getElementById('pathAlgo').value;
+      const grid = generateGrid(rows, cols);
+
+      const start = { r: 0, c: 0 };
+      const end = { r: rows-1, c: cols-1 };
+
+      fetch(`${backendURL}/api/pathfind`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ algorithm, grid, start, end })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('output').innerText =
+          `Algorithm: ${data.algorithm}\nSteps: ${data.steps}\nPath: ${JSON.stringify(data.path)}`;
+      });
+    }
+
+    function runCompareSorting() {
+      const array = parseArray(document.getElementById('sortArray').value);
+      const algorithms = ["bubble","insertion","merge","quick","heap"];
+
+      fetch(`${backendURL}/api/compare`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: "sort", algorithms, sampleInput: { array } })
+      })
+      .then(res => res.json())
+      .then(data => {
+        let html = "Sorting Comparison:\n";
+        html += "<table><tr><th>Algorithm</th><th>Steps</th><th>Time(ms)</th><th>Best</th><th>Avg</th><th>Worst</th><th>Stable</th></tr>";
+        data.forEach(d => {
+          html += `<tr><td>${d.algorithm}</td><td>${d.steps}</td><td>${d.timeMs}</td><td>${d.best}</td><td>${d.avg}</td><td>${d.worst}</td><td>${d.stable}</td></tr>`;
+        });
+        html += "</table>";
+        document.getElementById('output').innerHTML = html;
+      });
+    }
+
+    function runComparePath() {
+      const rows = parseInt(document.getElementById('gridRows').value);
+      const cols = parseInt(document.getElementById('gridCols').value);
+      const algorithms = ["bfs","dfs","dijkstra","aStar","bellman"];
+      const grid = generateGrid(rows, cols);
+      const start = { r: 0, c: 0 };
+      const end = { r: rows-1, c: cols-1 };
+
+      fetch(`${backendURL}/api/compare`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: "path", algorithms, sampleInput: { grid, start, end } })
+      })
+      .then(res => res.json())
+      .then(data => {
+        let html = "Pathfinding Comparison:\n";
+        html += "<table><tr><th>Algorithm</th><th>Steps</th><th>Time(ms)</th><th>Time Complexity</th><th>Space Complexity</th></tr>";
+        data.forEach(d => {
+          html += `<tr><td>${d.algorithm}</td><td>${d.steps}</td><td>${d.timeMs}</td><td>${d.time}</td><td>${d.space}</td></tr>`;
+        });
+        html += "</table>";
+        document.getElementById('output').innerHTML = html;
+      });
+    }
+  </script>
+</body>
+</html>

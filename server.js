@@ -307,10 +307,10 @@ app.post("/api/compare", (req, res) => {
   res.json(output);
 });
 
-// Serve frontend for all other routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
+ app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
+
 
 app.listen(PORT, () => {
   console.log(`✅ Backend running at http://localhost:${PORT}`);

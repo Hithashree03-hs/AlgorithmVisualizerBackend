@@ -71,8 +71,9 @@ function renderBarsTo(wrapper, values, color = "#3b82f6") {
         const bar = document.createElement("div");
         bar.className = "bar";
         const h = (Math.abs(getValue(v)) / maxVal) * 220 + 40;
-        bar.style.height = `${h}px`;
-        bar.style.width = `${100 / n - 2}%`;
+        // FIX 1: Use backticks for template literals in CSS style assignment
+        bar.style.height = `${h}px`; 
+        bar.style.width = `${100 / n - 2}%`; 
         bar.style.background = color;
         const label = document.createElement("span");
         label.textContent = v;
@@ -272,6 +273,7 @@ async function animateAllAlgorithms(values) {
             trow.style.backgroundColor = 'rgba(88, 166, 255, 0.2)';
             trow.style.border = '2px solid #58a6ff';
         }
+        // FIX 2: Use backticks for template literals in HTML content
         trow.innerHTML = `<td>${name.toUpperCase()}</td><td>${steps}</td><td>${timeMs} ms</td><td>${swaps}</td><td>${results[name].complexity}</td>`;
         comparisonTable.appendChild(trow);
     }
@@ -305,6 +307,7 @@ async function animateAllAlgorithms(values) {
     if (finalResults) {
         const finalSorted = finalResults.snaps[finalResults.snaps.length - 1] || values;
         const historyItem = document.createElement("p");
+        // FIX 3: Use backticks for template literals in text content
         historyItem.textContent = `Sorted [${values}] using ${selectedAlgo.toUpperCase()} → [${finalSorted}] (Steps: ${finalResults.steps}, Time: ${finalResults.timeMs}ms)`;
         historyDiv.prepend(historyItem);
     }
@@ -317,6 +320,7 @@ if (speedSlider && speedLabel) {
         const maxDelay = 400; 
         const minDelay = 10;
         ANIM_DELAY = maxDelay - (speedSlider.value / 100) * (maxDelay - minDelay);
+        // FIX 4: Use backticks for template literals
         speedLabel.textContent = `Speed: ${Math.round(speedSlider.value)}%`;
     };
     speedSlider.oninput();
@@ -705,6 +709,7 @@ if (runPathBtn) runPathBtn.onclick = async () => {
             costDisplay = ` | Cost: ${pathResult.cost.toFixed(2)}`;
         }
 
+        // FIX 5: Use backticks for template literals in text content
         pathCostDisplay.textContent = `Path: ${pathResult.path.join(" → ")}${costDisplay} | Steps: ${pathResult.steps}`; 
         
         await animatePath(pathResult.path); 

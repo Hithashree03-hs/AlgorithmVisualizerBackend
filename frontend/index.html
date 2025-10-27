@@ -1,99 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Algorithm Visualizer</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="container">
-    <h1>Algorithm Visualizer</h1>
-    <p>Sorting & Pathfinding — Interactive Visualizer</p>
 
-    <div class="mode-switch">
-      <button id="sortingBtn" class="active">Sorting</button>
-      <button id="pathfindingBtn">Pathfinding</button>
-    </div>
+    <header>
+        <h1>Algorithm Visualizer</h1>
+        <div class="mode-switch">
+            <button id="sortingBtn" class="active">Sorting</button>
+            <button id="pathfindingBtn">Pathfinding</button>
+        </div>
+    </header>
 
-    
-    <section id="sortingSection" class="visible">
-      <div class="controls">
-        <input type="text" id="arrayInput" placeholder="Enter elements (e.g. -5, 3.2, a, 0, z)" />
-        <select id="sortSelect">
-          <option value="bubble">Bubble Sort</option>
-          <option value="selection">Selection Sort</option>
-          <option value="insertion">Insertion Sort</option>
-          <option value="merge">Merge Sort</option>
-          <option value="quick">Quick Sort</option>
-          <option value="heap">Heap Sort</option>
-        </select>
-        <button id="runSortBtn">Run Sorting</button>
-      </div>
+    <main>
+        <section id="sortingSection" class="section visible">
+            <h2>📊 Sorting Visualizer</h2>
 
-   
-      <div class="speed-control">
-        <label for="speedRange">Speed:</label>
-        <input type="range" id="speedRange" min="50" max="1000" value="220" step="10" />
-        <span id="speedValue">220 ms</span>
-      </div>
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label for="arrayInput">Array Values:</label>
+                    <input type="text" id="arrayInput" value="5,3,8,4,2" placeholder="e.g., 5,3,8,4,2">
+                </div>
+                
+                <div class="control-group">
+                    <label for="sortSelect">Algorithm:</label>
+                    <select id="sortSelect">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="merge">Merge Sort</option>
+                        <option value="quick">Quick Sort</option>
+                        <option value="heap">Heap Sort</option>
+                    </select>
+                </div>
+                
+                <div class="control-group speed-control">
+                    <label for="speedSlider" id="speedLabel">Speed: 50%</label>
+                    <input type="range" id="speedSlider" min="1" max="100" value="50">
+                </div>
 
-      <div id="visualContainer"></div>
+                <button id="runSortBtn">Run Visualization</button>
+            </div>
 
-      <h2>Comparison Table</h2>
-      <table id="comparisonTable">
-        <thead>
-          <tr>
-            <th>Algorithm</th>
-            <th>Steps</th>
-            <th>Time (ms)</th>
-            <th>Swaps</th>
-            <th>Complexity</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+            <div id="visualContainer" class="single-chart-container">
+            </div>
 
-      <h2>History</h2>
-      <div id="history"></div>
-    </section>
+            <h3>Performance Metrics</h3>
+            <table id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Comparisons/Steps</th>
+                        <th>Time (ms)</th>
+                        <th>Swaps</th>
+                        <th>Complexity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            
+            <h3>History</h3>
+            <div id="history" class="history-log"></div>
+        </section>
 
-   
-    <section id="pathfindingSection" class="hidden">
-      <div class="path-controls">
-        <label>Graph Weighted:</label>
-        <select id="weightedSelect">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-        <label>Graph Directed:</label>
-        <select id="directedSelect">
-          <option value="undirected">Undirected</option>
-          <option value="directed">Directed</option>
-        </select>
-        <label>Algorithm:</label>
-        <select id="pathAlgoSelect">
-  <option value="bfs">BFS</option>
-  <option value="dfs">DFS</option>
-  <option value="dijkstra">Dijkstra</option>
-  <option value="bellmanford">Bellman-Ford</option>
-  <option value="astar">A*</option> 
-</select>
+        <section id="pathfindingSection" class="section">
+            <h2>🗺️ Pathfinding Visualizer</h2>
+            
+            <div class="controls-panel" id="pathfindingControls">
+                <button id="addNodeBtn" class="graph-action-btn">Add Node</button>
+                <button id="addEdgeBtn" class="graph-action-btn">Add Edge</button>
+                <button id="resetGraphBtn" class="graph-action-btn">Reset Graph</button>
+                
+                <div class="control-group">
+                    <label for="weightedSelect">Weighted:</label>
+                    <select id="weightedSelect">
+                        <option value="no" selected>Unweighted</option>
+                        <option value="yes">Weighted</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="directedSelect">Graph Type:</label>
+                    <select id="directedSelect">
+                        <option value="undirected" selected>Undirected</option>
+                        <option value="directed">Directed</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="pathAlgoSelect">Algorithm:</label>
+                    <select id="pathAlgoSelect">
+                        <option value="dijkstra" selected>Dijkstra (Shortest Path)</option>
+                        <option value="bfs">BFS (Unweighted)</option>
+                        <option value="astar">A* (Heuristic Search)</option>
+                        <option value="dfs">DFS (Path Finding)</option>
+                        <option value="bellmanford">Bellman-Ford (Neg. Weights)</option>
+                    </select>
+                </div>
+                
+                <button id="runPathBtn" class="run-path-btn">Find Path</button>
+            </div>
 
-        
-        <button id="addNodeBtn">Add Node</button>
-        <button id="addEdgeBtn">Add Edge</button>
-        <button id="runPathBtn">Run</button>
-        <button id="resetGraphBtn">Reset</button>
-      </div>
+            <canvas id="graphCanvas" width="800" height="400"></canvas>
+            <p id="pathCostDisplay" class="path-info"></p>
+        </section>
+    </main>
 
-      <canvas id="graphCanvas" width="900" height="500"></canvas>
-      <div id="pathCostDisplay"></div>
-    </section>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

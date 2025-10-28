@@ -1,0 +1,96 @@
+/* Global Styles for Dark Theme */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d0d1b; /* Very dark background */
+    color: #e0e0e0; /* Light text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbar */
+}
+
+/* Container Styling */
+.login-container {
+    background-color: #1a1a30; /* Slightly lighter dark background for the box */
+    padding: 45px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
+    width: 350px;
+    max-width: 90%;
+    text-align: center;
+    border: 1px solid #2e2e4e;
+}
+
+/* Heading and Subtitle */
+.title {
+    margin-bottom: 5px;
+    color: #bb86fc; /* Accent color (purple/magenta) */
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin-bottom: 30px;
+    color: #a0a0a0;
+    font-size: 0.9em;
+}
+
+/* Input Group */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #bb86fc;
+    font-size: 0.95em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #3a3a5a;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #121225; /* Even darker input background */
+    color: #e0e0e0;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #bb86fc;
+    outline: none;
+    box-shadow: 0 0 5px rgba(187, 134, 252, 0.5);
+}
+
+/* Button Styling */
+#loginBtn {
+    background-color: #bb86fc;
+    color: #1a1a30;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+#loginBtn:hover {
+    background-color: #9a67e6;
+    transform: translateY(-1px);
+}
+
+/* Message Display */
+.error-message {
+    margin-top: 20px;
+    color: #cf6679; /* Reddish error color */
+    font-weight: bold;
+}

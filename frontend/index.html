@@ -8,6 +8,13 @@
 </head>
 <body>
 
+    <script>
+        // Check if the 'isLoggedIn' flag is NOT set to 'true' in the browser's storage
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            // If the user is not logged in, redirect them to the login page
+            window.location.href = 'login.html';
+        }
+    </script>
     <header>
         <h1>Algorithm Visualizer</h1>
         <div class="mode-switch">

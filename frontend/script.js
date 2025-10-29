@@ -1,11 +1,10 @@
-// ----------------- Config & State -----------------
+
 let ANIM_DELAY = 220; 
 const NODE_RADIUS = 20;
 
 let nodes = [], edges = [], nodeCount = 0;
 let mode = null, edgeFromNode = null, startNodeId = null, endNodeId = null;
-
-// ----------------- DOM Elements -----------------
+ 
 const speedSlider = document.getElementById("speedSlider");
 const speedLabel = document.getElementById("speedLabel");
 
@@ -31,25 +30,20 @@ const weightedSelect = document.getElementById("weightedSelect");
 const directedSelect = document.getElementById("directedSelect");
 const pathAlgoSelect = document.getElementById("pathAlgoSelect");
 const pathCostDisplay = document.getElementById("pathCostDisplay");
-
-// ----------------- Utility Functions -----------------
-
-/** Parses comma-separated input into an array of numbers or strings. */
+ 
 function parseInputArray(input) {
     return input.split(",").map(v => v.trim()).filter(v => v.length > 0).map(v => {
         const num = parseFloat(v);
         return isFinite(num) ? num : v;
     });
 }
-
-/** Gets a numeric value for comparison. */
+ 
 function getValue(v) {
     if (typeof v === "number") return v;
     if (typeof v === "string") return v.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
     return 0;
 }
-
-/** Creates the outer DOM structure for a single chart visualization. */
+ 
 function createChartElement(titleText) {
     const chart = document.createElement("div");
     chart.className = "chart"; 
@@ -62,7 +56,7 @@ function createChartElement(titleText) {
     return { chart, barsWrapper };
 }
 
-/** Renders the current array state into the barsWrapper DOM element. */
+
 function renderBarsTo(wrapper, values, color = "#3b82f6") {
     wrapper.innerHTML = "";
     const maxVal = Math.max(...values.map(getValue), 1);
@@ -71,7 +65,7 @@ function renderBarsTo(wrapper, values, color = "#3b82f6") {
         const bar = document.createElement("div");
         bar.className = "bar";
         const h = (Math.abs(getValue(v)) / maxVal) * 220 + 40;
-        // FIX 1: Use backticks for template literals in CSS style assignment
+        
         bar.style.height = `${h}px`; 
         bar.style.width = `${100 / n - 2}%`; 
         bar.style.background = color;
@@ -82,14 +76,10 @@ function renderBarsTo(wrapper, values, color = "#3b82f6") {
     });
 }
 
-/** Calculates Euclidean distance (used in A*). */
-function distance(x1, y1, x2, y2) { return Math.hypot(x2 - x1, y2 - y1); }
+ function distance(x1, y1, x2, y2) { return Math.hypot(x2 - x1, y2 - y1); }
+ 
 
-// ----------------- Sorting Algorithms (Snapshot Generators) -----------------
-// *** RESTORED SORTING LOGIC ***
-
-/** Generates snapshots for Bubble Sort. */
-function bubbleSnapshots(arr) {
+ function bubbleSnapshots(arr) {
     const a = [...arr]; const snaps = [a.slice()]; let steps = 0, swaps = 0;
     for (let i = 0; i < a.length - 1; i++)
         for (let j = 0; j < a.length - i - 1; j++) {
@@ -103,7 +93,7 @@ function bubbleSnapshots(arr) {
     return { snaps, steps, swaps };
 }
 
-/** Generates snapshots for Selection Sort. */
+
 function selectionSnapshots(arr) {
     const a = [...arr]; const snaps = [a.slice()]; let steps = 0, swaps = 0;
     for (let i = 0; i < a.length; i++) {
@@ -120,7 +110,7 @@ function selectionSnapshots(arr) {
     } return { snaps, steps, swaps };
 }
 
-/** Generates snapshots for Insertion Sort. */
+
 function insertionSnapshots(arr) {
     const a = [...arr]; const snaps = [a.slice()]; let steps = 0, swaps = 0;
     for (let i = 1; i < a.length; i++) {
@@ -138,7 +128,7 @@ function insertionSnapshots(arr) {
     } return { snaps, steps, swaps };
 }
 
-/** Generates snapshots for Merge Sort. */
+
 function mergeSnapshots(arr) {
     const snaps = []; let steps = 0, swaps = 0;
     function merge(left, right) {
@@ -164,8 +154,7 @@ function mergeSnapshots(arr) {
     return { snaps, steps, swaps };
 }
 
-/** Generates snapshots for Quick Sort. */
-function quickSnapshots(arr) {
+ function quickSnapshots(arr) {
     const a = arr.slice();
     const snaps = [a.slice()]; 
     let steps = 0, swaps = 0;
@@ -201,7 +190,7 @@ function quickSnapshots(arr) {
     return { snaps, steps, swaps };
 }
 
-/** Generates snapshots for Heap Sort. */
+
 function heapSnapshots(arr) {
     const a = arr.slice(); const snaps = [a.slice()]; let steps = 0, swaps = 0;
     function heapify(n, i) {
@@ -228,9 +217,7 @@ function heapSnapshots(arr) {
 
 const SORT_SNAPSHOT_FUNCS = { bubble: bubbleSnapshots, selection: selectionSnapshots, insertion: insertionSnapshots, merge: mergeSnapshots, quick: quickSnapshots, heap: heapSnapshots };
 
-// ----------------- Main Sorting Logic -----------------
-
-/** Animates all sorting algorithms simultaneously. */
+ 
 async function animateAllAlgorithms(values) {
     visualContainer.innerHTML = ""; 
     comparisonTable.innerHTML = "";
@@ -241,10 +228,10 @@ async function animateAllAlgorithms(values) {
     const results = {};
     const chartElements = {};
     
-    // 1. Generate Snapshots, Setup Panels, and Prepare Elements
+   
     for (const name of allAlgoNames) {
         const startTime = performance.now();
-        // Execute the actual sorting logic
+        
         const { snaps, steps, swaps } = SORT_SNAPSHOT_FUNCS[name](values);
         const endTime = performance.now();
         const timeMs = (endTime - startTime).toFixed(2);
@@ -273,12 +260,12 @@ async function animateAllAlgorithms(values) {
             trow.style.backgroundColor = 'rgba(88, 166, 255, 0.2)';
             trow.style.border = '2px solid #58a6ff';
         }
-        // FIX 2: Use backticks for template literals in HTML content
+        
         trow.innerHTML = `<td>${name.toUpperCase()}</td><td>${steps}</td><td>${timeMs} ms</td><td>${swaps}</td><td>${results[name].complexity}</td>`;
         comparisonTable.appendChild(trow);
     }
     
-    // 2. Reorder the chart elements
+   
     const selectedChart = chartElements[selectedAlgo];
     for (const name of allAlgoNames) {
         if (name !== selectedAlgo) {
@@ -289,7 +276,7 @@ async function animateAllAlgorithms(values) {
         visualContainer.prepend(selectedChart);
     }
 
-    // 3. Animate All Algorithms Concurrently
+    
     const maxFrames = Math.max(...Object.values(results).map(r => r.snaps.length));
     
     for (let frame = 0; frame < maxFrames; frame++) {
@@ -302,27 +289,26 @@ async function animateAllAlgorithms(values) {
         await new Promise(res => setTimeout(res, ANIM_DELAY));
     }
 
-    // 4. History Update
+    
     const finalResults = results[selectedAlgo];
     if (finalResults) {
         const finalSorted = finalResults.snaps[finalResults.snaps.length - 1] || values;
         const historyItem = document.createElement("p");
-        // FIX 3: Use backticks for template literals in text content
+        
         historyItem.textContent = `Sorted [${values}] using ${selectedAlgo.toUpperCase()} → [${finalSorted}] (Steps: ${finalResults.steps}, Time: ${finalResults.timeMs}ms)`;
         historyDiv.prepend(historyItem);
     }
 }
-
-// ----------------- Event Handlers (Sorting & Mode Switch) -----------------
-
+ 
 if (speedSlider && speedLabel) {
     speedSlider.oninput = () => {
-        const maxDelay = 400; 
-        const minDelay = 10;
-        ANIM_DELAY = maxDelay - (speedSlider.value / 100) * (maxDelay - minDelay);
-        // FIX 4: Use backticks for template literals
-        speedLabel.textContent = `Speed: ${Math.round(speedSlider.value)}%`;
+        // Slider value is in seconds (e.g. 0.5–5.0)
+        const seconds = parseFloat(speedSlider.value);
+        ANIM_DELAY = seconds * 1000; // convert to milliseconds
+        speedLabel.textContent = `Speed: ${seconds.toFixed(1)}s per step`;
     };
+
+    // Initialize default value
     speedSlider.oninput();
 }
 
@@ -349,11 +335,7 @@ pathfindingBtn.onclick = () => {
     sortingSection.classList.remove("visible");
 };
 
-// ----------------------------------------------------
-// ----------------- Pathfinding Logic -----------------
-// ----------------------------------------------------
-
-// --- Graph Drawing ---
+ 
 
 function drawGraph(highlightPath = []) {
     if (!ctx) return;
@@ -361,15 +343,14 @@ function drawGraph(highlightPath = []) {
     ctx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
     ctx.font = "14px Poppins";
 
-    // Draw Edges
+   
     edges.forEach(e => {
         const from = nodes.find(n => n.id === e.from); const to = nodes.find(n => n.id === e.to);
         if (!from || !to) return;
 
         ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y);
         ctx.strokeStyle = directedSelect.value === "directed" ? "#f97316" : "#60a5fa"; ctx.lineWidth = 2; ctx.stroke();
-
-        // Draw Arrowhead for Directed Graphs
+ 
         if (directedSelect.value === "directed") {
             const angle = Math.atan2(to.y - from.y, to.x - from.x); const headlen = 12;
             const arrowX = to.x - NODE_RADIUS * Math.cos(angle);
@@ -380,7 +361,7 @@ function drawGraph(highlightPath = []) {
             ctx.closePath(); ctx.fillStyle = "#f97316"; ctx.fill();
         }
 
-        // Draw Weight
+        
         if (e.weight !== undefined && weightedSelect.value === "yes") {
             const mx = (from.x + to.x) / 2, my = (from.y + to.y) / 2;
             ctx.fillStyle = "#f97316"; 
@@ -388,7 +369,7 @@ function drawGraph(highlightPath = []) {
         }
     });
 
-    // Highlight Path
+    
     if (highlightPath.length > 1) {
         for (let i = 0; i < highlightPath.length - 1; i++) {
             const a = nodes.find(n => n.id === highlightPath[i]); const b = nodes.find(n => n.id === highlightPath[i + 1]);
@@ -397,8 +378,7 @@ function drawGraph(highlightPath = []) {
             ctx.strokeStyle = "#22c55e"; ctx.lineWidth = 4; ctx.stroke();
         }
     }
-
-    // Draw Nodes
+ 
     nodes.forEach(n => {
         let nodeColor = "#3b82f6"; 
         let borderColor = "#0b1220";
@@ -426,16 +406,15 @@ function drawGraph(highlightPath = []) {
     });
 }
 
-// --- Canvas Click Handler ---
+
 if (graphCanvas) {
     graphCanvas.addEventListener("click", e => {
         const rect = graphCanvas.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top;
         const clicked = nodes.find(n => distance(n.x, n.y, x, y) <= NODE_RADIUS + 4); 
 
-        // 1. ADD NODE MODE
-        if (mode === "addNode") { nodes.push({ id: nodeCount++, x, y }); drawGraph(); return; }
+         if (mode === "addNode") { nodes.push({ id: nodeCount++, x, y }); drawGraph(); return; }
 
-        // 2. ADD EDGE MODE
+        
         if (mode === "addEdge") {
             if (!clicked) return;
 
@@ -460,7 +439,7 @@ if (graphCanvas) {
     });
 }
 
-// --- Pathfinding Helper Functions ---
+
 function getNeighbors(id) { return edges.filter(e => e.from === id).map(e => ({ id: e.to, weight: e.weight || 1 })); }
 
 async function animatePath(path) { 
@@ -480,7 +459,7 @@ function reconstructPath(cameFrom, endId) {
     return path.reverse();
 }
 
-// ----------------- Pathfinding Algorithms -----------------
+
 
 function bfs(startId, endId) {
     const queue = [startId];
@@ -627,8 +606,7 @@ function bellmanFord(startId, endId) {
         }
         if (!relaxed) break; 
     }
-
-    // Check for negative weight cycles
+ 
     for (const edge of edges) {
         if (distances.get(edge.from) !== Infinity && distances.get(edge.to) > distances.get(edge.from) + edge.weight) {
             return { path: [], cost: "Negative Cycle Detected", steps };
@@ -641,8 +619,7 @@ function bellmanFord(startId, endId) {
     return { path: reconstructPath(cameFrom, endId), cost: finalCost, steps };
 }
 
-
-// --- Event Handlers (Pathfinding Buttons) ---
+ 
 
 if (addNodeBtn) addNodeBtn.onclick = () => { mode = mode === "addNode" ? null : "addNode"; edgeFromNode = null; drawGraph(); };
 if (addEdgeBtn) addEdgeBtn.onclick = () => { mode = mode === "addEdge" ? null : "addEdge"; edgeFromNode = null; drawGraph(); };
@@ -653,32 +630,30 @@ if (resetGraphBtn) resetGraphBtn.onclick = () => {
 };
 
 if (runPathBtn) runPathBtn.onclick = async () => {
-    // 1. Check for basic graph existence
+    
     if (nodes.length === 0 || edges.length === 0) { 
         alert("Add nodes and edges to the graph first!"); 
         return; 
     }
 
-    // 2. Get Start and End Nodes using prompt() dialogs
+    
     const startIdPrompt = prompt("Enter START node ID:", startNodeId !== null ? startNodeId : "0"); 
     const endIdPrompt = prompt("Enter TARGET node ID:", endNodeId !== null ? endNodeId : "1");
     
     const startId = parseInt(startIdPrompt); 
     const endId = parseInt(endIdPrompt);
 
-    // 3. Validation
+    
     if (isNaN(startId) || isNaN(endId) || !nodes.some(n => n.id === startId) || !nodes.some(n => n.id === endId)) { 
         alert("Invalid or non-existent node IDs entered! Please check the IDs on the canvas."); 
         return; 
     }
-
-    // Update state and highlighting
+ 
     startNodeId = startId;
     endNodeId = endId;
     drawGraph(); 
 
-    // 4. Execution
-    runPathBtn.disabled = true; 
+     runPathBtn.disabled = true; 
     
     let pathResult;
     switch (pathAlgoSelect.value) {
@@ -690,7 +665,7 @@ if (runPathBtn) runPathBtn.onclick = async () => {
         default: pathResult = { path: [], cost: Infinity };
     }
 
-    // 5. Display Result
+    
     let costDisplay = '';
     
     if (pathResult.cost === "Negative Cycle Detected") {
@@ -702,20 +677,17 @@ if (runPathBtn) runPathBtn.onclick = async () => {
         drawGraph(); 
     }
     else { 
-        // Show Cost: 
-        // 1. Always show cost for Dijkstra/A*/Bellman-Ford when "Weighted: Yes"
-        // 2. Always show cost (path length) for BFS/DFS.
+        
         if (weightedSelect.value === "yes" || pathAlgoSelect.value === "bfs" || pathAlgoSelect.value === "dfs") {
             costDisplay = ` | Cost: ${pathResult.cost.toFixed(2)}`;
         }
 
-        // FIX 5: Use backticks for template literals in text content
+        
         pathCostDisplay.textContent = `Path: ${pathResult.path.join(" → ")}${costDisplay} | Steps: ${pathResult.steps}`; 
         
         await animatePath(pathResult.path); 
     }
     runPathBtn.disabled = false;
 };
-
-// Initial calls
+ 
 if (ctx) drawGraph();

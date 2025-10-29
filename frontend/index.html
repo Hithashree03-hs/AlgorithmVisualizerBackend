@@ -9,9 +9,9 @@
 <body>
 
     <script>
-        // Check if the 'isLoggedIn' flag is NOT set to 'true' in the browser's storage
+      
         if (localStorage.getItem('isLoggedIn') !== 'true') {
-            // If the user is not logged in, redirect them to the login page
+           
             window.location.href = 'login.html';
         }
     </script>
@@ -46,9 +46,14 @@
                 </div>
                 
                 <div class="control-group speed-control">
-                    <label for="speedSlider" id="speedLabel">Speed: 50%</label>
-                    <input type="range" id="speedSlider" min="1" max="100" value="50">
-                </div>
+  <label for="speedSlider" id="speedLabel">Speed: 2.0s per step</label>
+  <input type="range" id="speedSlider" min="0.5" max="5" step="0.1" value="2">
+  <div class="speed-hints">
+    <span>Fast</span>
+    <span style="float:right;">Slow</span>
+  </div>
+</div>
+
 
                 <button id="runSortBtn">Run Visualization</button>
             </div>

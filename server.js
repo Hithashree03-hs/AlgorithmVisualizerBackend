@@ -1,30 +1,26 @@
 const express = require('express');
-const path = require('path'); // Ensure path module is imported
+const path = require('path');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use Render's dynamic port
 
-// ... Your API/other configurations go here
+// ✅ Serve login page first — this MUST come BEFORE static middleware
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
+});
 
-// 🔴 THE CRITICAL FIX: Configure Express to serve static files (CSS, JS, etc.)
-// It tells Express to serve files from the 'frontend' directory, which is
-// alongside the 'server.js' file.
+// ✅ Serve main app (visualizer) page
+app.get('/ALGORITHMVISUALIZERBACKEND', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+// ✅ API example
+app.get('/api/sort', (req, res) => {
+  res.json({ message: "Sorting result" });
+});
+
+// ✅ Serve static files *after* routes*
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-
-// Example API route (for context)
-app.get('/api/sort', (req, res) => {
-    // Your sort logic here
-    res.json({ message: "Sorting result" });
-});
-
-// Fallback route: Serves the index.html file for any non-API request,
-// ensuring SPA routing works and the initial page loads.
-app.get('*', (req, res) => {
-    // NOTE: Assumes frontend is in a directory relative to server.js
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
-});
-
-
 app.listen(PORT, () => {
-    console.log(`✅ Backend running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
